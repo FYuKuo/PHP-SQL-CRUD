@@ -38,18 +38,18 @@ select {
 
 .nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     padding: 0 30px;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 .nav_limit {
-    margin: 0 10px;
+    margin: 0 20px;
 }
 
 table {
     border-collapse: collapse;
-    margin: 10px auto;
+    margin: 20px auto;
     text-align: center;
     background-color: white;
     border-radius: 20px;
@@ -82,9 +82,15 @@ tr:hover:not(:first-child) {
 .page {
     display: flex;
     justify-content: center;
-    margin: 20px auto;
+    margin: 30px auto;
 }
 
 .page>a {
     margin: 0 5px;
+    color: rgb(37, 37, 37);
+    text-decoration: none;
+}
+
+.nowPage {
+    border-bottom: 3px solid pink;
 }

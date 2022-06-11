@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>學生資訊查詢網</title>
     <link rel="stylesheet" href="./style.css">
+
 </head>
 <?php
 
@@ -22,10 +23,12 @@ $sql = "SELECT * FROM `students`";
 // 從資料庫抓出要執行的動作
 $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
 
-if (isset($_GET['limit'])){
+//想要顯示的筆數
+if (isset($_GET['limit'])) {
     $limit = $_GET['limit'];
-}else{
-    $limit = 25;
+} else {
+    //沒有的話就預設
+    $limit = 12;
 }
 $num_rows = count($rows); //計算students裡共有幾筆資料
 $pages = ceil($num_rows / $limit);
@@ -56,6 +59,7 @@ if (isset($_GET['page'])) {
         <div class="nav_limit">
             <form action="./index.php" method="get">
                 <select name="limit" id="limit">
+                    <option value="12" <?= ($limit) == "12" ? 'selected' : '' ?>>每頁顯示12筆</option>
                     <option value="25" <?= ($limit) == "25" ? 'selected' : '' ?>>每頁顯示25筆</option>
                     <option value="50" <?= ($limit) == "50" ? 'selected' : '' ?>>每頁顯示50筆</option>
                     <option value="100" <?= ($limit) == "100" ? 'selected' : '' ?>>每頁顯示100筆</option>
@@ -96,11 +100,11 @@ if (isset($_GET['page'])) {
         ?>
             <td class="td_function">
                 <form action="./edit.php" method="post">
-                    <input type="hidden" name="id" value="<?=$row['0']?>">
+                    <input type="hidden" name="id" value="<?= $row['0'] ?>">
                     <button onclick="location.href='edit.php'">修改</button>
                 </form>
                 <form action="./delete.php" method="post">
-                    <input type="hidden" name="id" value="<?=$row['0']?>">
+                    <input type="hidden" name="id" value="<?= $row['0'] ?>">
                     <button type="submit">刪除</button>
                 </form>
             </td>
@@ -110,13 +114,45 @@ if (isset($_GET['page'])) {
         }
         ?>
     </table>
-    <div class="page">
+    
     <!-- 頁數 -->
-    <?php
-    for ($i = 1; $i <= $pages; $i++) {
-        echo "<a href='index.php?page=$i&limit=$limit'>$i </a>";
-    }
-    ?>
+    <div class="page">
+
+        <!-- 直接到第一頁 -->
+        <a href="index.php?page=1&limit=<?= $limit ?>">«</a>
+
+        <?php
+        //如果在第二頁以內
+        if ($page < 3) {
+            // 從一開始顯示五頁
+            for ($i = 1; $i <= 5; $i++) {
+                // 判斷是不是現在的頁數
+                $nowPage = '';
+                if ($page == $i) {
+                    $nowPage = 'nowPage';
+                }
+                echo "<a href='index.php?page=$i&limit=$limit' class='$nowPage'>$i </a>";
+            }
+            //如果在第三頁以後
+        } else {
+            // 從現在頁數前兩頁開始 共顯示五頁
+            for ($i = ($page - 2); $i <= $page + 2; $i++) {
+                // 判斷是不是現在的頁數
+                $nowPage = '';
+                if ($page == $i) {
+                    $nowPage = 'nowPage';
+                }
+                echo "<a href='index.php?page=$i&limit=$limit' class='$nowPage'>$i </a>";
+
+                // 超過pages時中斷
+                if ($i == $pages) {
+                    break;
+                }
+            }
+        }
+        ?>
+        <!-- 直接到最後一頁 -->
+        <a href="index.php?page=<?= $pages ?>&limit=<?= $limit ?>">»</a>
     </div>
 </body>
 
