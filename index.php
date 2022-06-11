@@ -9,10 +9,14 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <?php
+// 呼叫資料庫
 $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
 $pdo = new PDO($dsn, 'root', '');
+
+//資料庫要執行的動作
 $sql = "SELECT * FROM `students`";
 
+// 從資料庫抓出要執行的動作
 $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
 ?>
 
@@ -20,15 +24,15 @@ $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
 
     <div class="header">
         <div class="logo">
-            學生資料查詢網
-        </div>
-        <div class="nav">
-            <div class="nav_add">
-                <button>新增</button>
-            </div>
+            學生資訊查詢網
         </div>
     </div>
-
+    
+    <div class="nav">
+        <div class="nav_add">
+            <button onclick="location.href='add.php'">新增</button>
+        </div>
+    </div>
     <!-- 表格區 -->
     <table>
         <tr>
