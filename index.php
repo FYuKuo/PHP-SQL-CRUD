@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <?php
+
+
 // 呼叫資料庫
 $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
 $pdo = new PDO($dsn, 'root', '');
@@ -16,19 +18,51 @@ $pdo = new PDO($dsn, 'root', '');
 //資料庫要執行的動作
 $sql = "SELECT * FROM `students`";
 
+
 // 從資料庫抓出要執行的動作
 $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
+
+if (isset($_GET['limit'])){
+    $limit = $_GET['limit'];
+}else{
+    $limit = 25;
+}
+$num_rows = count($rows); //計算students裡共有幾筆資料
+$pages = ceil($num_rows / $limit);
+
+//如果有收到頁數
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+    $start = ($page - 1) * $limit;
+    $sql = "SELECT * FROM `students` LIMIT $start,$limit";
+    $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
+} else { //如果沒有收到頁數就從第一頁開始
+    $page = 1;
+    $start = ($page - 1) * $limit;
+    $sql = "SELECT * FROM `students` LIMIT $start,$limit";
+    $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
+}
 ?>
 
 <body>
 
     <div class="header">
         <div class="logo">
-            學生資訊查詢網
+            <a href="./index.php">學生資訊查詢網</a>
         </div>
     </div>
-    
+
     <div class="nav">
+        <div class="nav_limit">
+            <form action="./index.php" method="get">
+                <select name="limit" id="limit">
+                    <option value="25" <?= ($limit) == "25" ? 'selected' : '' ?>>每頁顯示25筆</option>
+                    <option value="50" <?= ($limit) == "50" ? 'selected' : '' ?>>每頁顯示50筆</option>
+                    <option value="100" <?= ($limit) == "100" ? 'selected' : '' ?>>每頁顯示100筆</option>
+                </select>
+                <button type="submit">更新</button>
+            </form>
+        </div>
         <div class="nav_add">
             <button onclick="location.href='add.php'">新增</button>
         </div>
@@ -70,6 +104,14 @@ $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_NUM);
         }
         ?>
     </table>
+    <div class="page">
+    <!-- 頁數 -->
+    <?php
+    for ($i = 1; $i <= $pages; $i++) {
+        echo "<a href='index.php?page=$i&limit=$limit'>$i </a>";
+    }
+    ?>
+    </div>
 </body>
 
 </html>

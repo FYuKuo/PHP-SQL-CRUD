@@ -8,6 +8,16 @@ body {
     background-color: #eff1f5;
 }
 
+button {
+    cursor: pointer;
+}
+
+select {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+
 .header {
     height: 50px;
     line-height: 50px;
@@ -21,11 +31,20 @@ body {
 
 }
 
+.logo>a {
+    color: black;
+    text-decoration: none;
+}
+
 .nav {
     display: flex;
     justify-content: flex-end;
     padding: 0 30px;
     padding-top: 10px;
+}
+
+.nav_limit {
+    margin: 0 10px;
 }
 
 table {
@@ -48,4 +67,14 @@ tr:not(:last-child) {
 
 tr:hover:not(:first-child) {
     background-color: lightgray;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.page>a {
+    margin: 0 5px;
 }
