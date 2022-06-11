@@ -94,9 +94,15 @@ if (isset($_GET['page'])) {
                 echo "</td>";
             }
         ?>
-            <td>
-                <button>修改</button>
-                <button>刪除</button>
+            <td class="td_function">
+                <form action="./edit.php" method="post">
+                    <input type="hidden" name="id" value="<?=$row['0']?>">
+                    <button onclick="location.href='edit.php'">修改</button>
+                </form>
+                <form action="./delete.php" method="post">
+                    <input type="hidden" name="id" value="<?=$row['0']?>">
+                    <button type="submit">刪除</button>
+                </form>
             </td>
 
             </tr>

@@ -69,6 +69,16 @@ tr:hover:not(:first-child) {
     background-color: lightgray;
 }
 
+.td_function {
+    display: flex;
+    /* flex-direction: row; */
+    align-items: center;
+}
+
+.td_function>form>button {
+    margin: 0 5px;
+}
+
 .page {
     display: flex;
     justify-content: center;
